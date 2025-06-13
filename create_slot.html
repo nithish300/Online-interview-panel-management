@@ -132,55 +132,60 @@
 
   <!-- Form Container -->
   <div class="form-container">
-    <form id="panel-slot-form">
-      <div class="form-group">
-        <label for="email">Panel Email ID *</label>
-        <input type="email" id="email" name="email" placeholder="Enter Panel Email ID" required>
-      </div>
+    <form id="panel-slot-form" action="/save_slot" method="POST">
+<!-- Email -->
+<div class="form-group">
+  <label for="email">Panel Email ID *</label>
+  <input type="email" id="email" name="panel_email_id" placeholder="Enter Panel Email ID" required>
+</div>
 
-      <div class="form-group">
-        <label for="name">Name *</label>
-        <input type="text" id="name" name="name" placeholder="Enter Name" required>
-      </div>
+<!-- Name -->
+<div class="form-group">
+  <label for="name">Name *</label>
+  <input type="text" id="name" name="name" placeholder="Enter Name" required>
+</div>
 
-      <div class="form-group">
-        <label for="competency">Competency *</label>
-        <input type="text" id="competency" name="competency" placeholder="Enter Competency" required>
-      </div>
+<!-- Competency -->
+<div class="form-group">
+  <label for="competency">Competency *</label>
+  <input type="text" id="competency" name="competency" placeholder="Enter Competency" required>
+</div>
 
-      <div class="form-group">
-        <label for="geo">Geo *</label>
-        <select id="geo" name="geo" required>
-          <option value="">Select Geo</option>
-          <option value="India">India</option>
-          <option value="APAC">APAC</option>
-          <option value="Europe">Europe</option>
-          <option value="NA">NA</option>
-        </select>
-      </div>
+<!-- Geo -->
+<div class="form-group">
+  <label for="geo">Geo *</label>
+  <select id="geo" name="geo" required>
+    <option value="">Select Geo</option>
+    <option value="India">India</option>
+    <option value="APAC">APAC</option>
+    <option value="Europe">Europe</option>
+    <option value="NA">NA</option>
+  </select>
+</div>
 
-      <!-- Date Selection -->
-      <div class="calendar-container">
-        <div class="form-group">
-          <label for="start-date">Slot Start Date *</label>
-          <input type="date" id="start-date" name="start_date" required>
-        </div>
-        <div class="form-group">
-          <label for="end-date">Slot End Date *</label>
-          <input type="date" id="end-date" name="end_date" required>
-        </div>
-      </div>
+<!-- Date Selection -->
+<div class="calendar-container">
+  <div class="form-group">
+    <label for="start-date">Slot Start Date *</label>
+    <input type="date" id="start-date" name="slot_start_date" required>
+  </div>
+  <div class="form-group">
+    <label for="end-date">Slot End Date *</label>
+    <input type="date" id="end-date" name="slot_end_date" required>
+  </div>
+</div>
 
-      <div class="form-group">
-        <label for="slot-time">Slot Start Time *</label>
-        <input type="time" id="slot-time" name="slot_time" required>
-      </div>
+<!-- Slot Time -->
+<div class="form-group">
+  <label for="slot-time">Slot Start Time *</label>
+  <input type="time" id="slot-time" name="slot_time" required>
+</div>
 
-      <div class="form-group">
-        <label for="num-slots">Number of Slots (each duration 45 mins) *</label>
-        <input type="number" id="num-slots" name="num_slots" min="1" placeholder="Enter Number of Slots" required>
-      </div>
-
+<!-- Number of Slots -->
+<div class="form-group">
+  <label for="num-slots">Number of Slots (each duration 45 mins) *</label>
+  <input type="number" id="num-slots" name="num_slots" min="1" placeholder="Enter Number of Slots" required>
+</div>
       <button type="submit" class="submit-btn">Save</button>
     </form>
   </div>
@@ -192,31 +197,35 @@
 
   <!-- Internal JavaScript -->
   <script>
-    document.getElementById('panel-slot-form').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent default form submission
+document.getElementById('panel-slot-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-      email = document.getElementById('email').value.trim();
-      name = document.getElementById('name').value.trim();
-      competency = document.getElementById('competency').value.trim();
-      geo = document.getElementById('geo').value.trim();
-      startDate = document.getElementById('start-date').value;
-      endDate = document.getElementById('end-date').value;
-      slotTime = document.getElementById('slot-time').value;
-      numSlots = document.getElementById('num-slots').value;
+    const email = document.getElementById('email').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const competency = document.getElementById('competency').value.trim();
+    const geo = document.getElementById('geo').value.trim();
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+    const slotTime = document.getElementById('slot-time').value;
+    const numSlots = document.getElementById('num-slots').value;
 
-      if (!email || !name || !competency || !geo || !startDate || !endDate || !slotTime || !numSlots) {
+    if (!email || !name || !competency || !geo || !startDate || !endDate || !slotTime || !numSlots) {
         alert("Please fill in all required fields.");
         return;
-      }
+    }
 
-      if (new Date(startDate) > new Date(endDate)) {
+    if (new Date(startDate) > new Date(endDate)) {
         alert("Start date must be before or equal to the end date.");
         return;
-      }
+    }
 
-      alert("Form submitted successfully!");
-      this.submit(); // Uncomment and change action attribute if you want actual submission
-    });
+    if (isNaN(numSlots) || numSlots <= 0) {
+        alert("Number of slots must be a positive integer.");
+        return;
+    }
+
+    this.submit(); // Submit the form
+});
   </script>
 </body>
 </html>

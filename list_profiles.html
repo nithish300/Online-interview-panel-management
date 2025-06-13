@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Profiles</title>
+</head>
+<body>
+    <h2>Panel Profiles</h2>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        {% for profile in profiles %}
+        <tr>
+            <td>{{ profile['Panel Email ID'] }}</td>
+            <td>{{ profile['Panel Name'] }}</td>
+            <td><a href="/modify/{{ profile['Panel Email ID'] }}">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

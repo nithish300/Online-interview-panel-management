@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel Slot Creation</title>
+  <title>Panel Slot Modification</title>
 
   <!-- Internal CSS -->
   <style>
@@ -143,12 +143,12 @@
                  alt="Hexaware Logo" class="logo" onerror="this.style.display='none'" />
       
           </a>
-    <h1>Panel Slot Creation</h1>
+    <h1>Panel Slot Modification</h1>
   </div>
 
   <!-- Form Container -->
   <div class="form-container">
-    <form id="panel-slot-form">
+    <form id="panel-slot-form" action="/update_slot" method= "POST">
       <div class="form-group">
         <label for="email">Panel Email ID *</label>
         <input type="email" id="email" name="email" placeholder="Enter Panel Email ID" required>
@@ -179,11 +179,11 @@
       <div class="calendar-container">
         <div class="form-group">
           <label for="start-date">Slot Start Date *</label>
-          <input type="date" id="start-date" name="start_date" required>
+          <input type="date" id="start-date" name="slot_start_date" required>
         </div>
         <div class="form-group">
           <label for="end-date">Slot End Date *</label>
-          <input type="date" id="end-date" name="end_date" required>
+          <input type="date" id="end-date" name="slot_end_date" required>
         </div>
       </div>
 
@@ -209,8 +209,13 @@
 
   <!-- Internal JavaScript -->
   <script>
-    document.getElementById('panel-slot-form').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent default form submission
+document.getElementById('panel-slot-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
+    let email, name, competency, geo, startDate, endDate, slotTime, numSlots;
 
       email = document.getElementById('email').value.trim();
       name = document.getElementById('name').value.trim();

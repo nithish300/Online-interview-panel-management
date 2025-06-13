@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Modify Profile</title>
-    <link rel="icon" href="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg" type="image/x-icon">
-
+  <link rel="icon" href="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg"  type="image/x-icon">
   <!-- Internal CSS -->
   <style>
     * {
@@ -13,14 +12,12 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f8;
       color: #333;
       line-height: 1.6;
     }
-
     .header {
       padding: 20px;
       background-color: #2c3e50;
@@ -29,13 +26,10 @@
     h1{
         text-align: center;
     }
-    
-
     .logo {
       height: 50px;
       margin-right: 15px;
     }
-
     .form-container {
       max-width: 700px;
       margin: 30px auto;
@@ -44,23 +38,19 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-
     h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2c3e50;
     }
-
     .form-group {
       margin-bottom: 15px;
     }
-
     .form-group label {
       display: block;
       font-weight: bold;
       margin-bottom: 5px;
     }
-
     .form-group input,
     .form-group select {
       width: 100%;
@@ -70,19 +60,16 @@
       border-radius: 5px;
       transition: border-color 0.3s ease;
     }
-
     .form-group input:focus,
     .form-group select:focus {
       outline: none;
       border-color: #3498db;
     }
-
     .skills-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 10px;
     }
-
     .submit-btn {
       display: block;
       width: 100%;
@@ -96,7 +83,6 @@
       margin-top: 20px;
       transition: background-color 0.3s ease;
     }
-
     .submit-btn:hover {
       background-color: #2980b9;
     }
@@ -116,7 +102,6 @@
     .cancel-btn:hover {
       background-color: #c0392b;
     }
-
     .footer {
       text-align: center;
       margin-top: 30px;
@@ -129,7 +114,7 @@
 </head>
 <body>
     <header class="header">
-    <a href="http://127.0.0.1:5500/main.html"  target="_blank" rel="noopener noreferrer">
+    <a onclick="window.location.href='templates\main.html'"  target="_blank" rel="noopener noreferrer">
     
             <img src="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg"      
       
@@ -138,130 +123,129 @@
           </a>
 
   </header>
+<!-- Header -->
+<div class="header">
+  <h1>Modify The Panel Profile</h1>
+</div>
 
-  <!-- Header -->
-  <div class="header">
-    <h1>Modify The Panel Profile</h1>
-  </div>
-
-  <!-- Form Container -->
-  <div class="form-container">
-    <form id="panel-profile-form">
-      <div class="form-group">
-        <label for="email">Panel Email ID *</label>
-        <input type="email" id="email" name="email" placeholder="Enter Panel Email ID" required>
+<!-- Form Container -->
+<div class="form-container">
+  <form id="panel-profile-form" action="/update_profile" method="POST">
+    <div class="form-group">
+      <label for="email">Panel Email ID *</label>
+      <input type="email" id="email" name="email" placeholder="Enter Panel Email ID" required>
+      <button type="button" onclick="loadProfile()">Load Profile</button>
+    </div>
+    <div class="form-group">
+      <label for="grade">Panel Grade *</label>
+      <input type="text" id="grade" name="grade" placeholder="Enter Panel Grade" required>
+    </div>
+    <div class="form-group">
+      <label for="evaluation-round">Panel Evaluation Round (L1 / L2 / L3) *</label>
+      <input type="text" id="evaluation-round" name="evaluation_round" placeholder="Enter Evaluation Round" required>
+    </div>
+    <div class="form-group">
+      <label for="name">Panel Name *</label>
+      <input type="text" id="name" name="name" placeholder="Enter Panel Name" required>
+    </div>
+    <div class="form-group">
+      <label>Panel Core Skill (Max 8 skills allowed)</label>
+      <div class="skills-container">
+        <input type="text" class="skill-input" name="skill_1" id="skill_1" placeholder="Skill 1">
+        <input type="text" class="skill-input" name="skill_2" id="skill_2" placeholder="Skill 2">
+        <input type="text" class="skill-input" name="skill_3" id="skill_3" placeholder="Skill 3">
+        <input type="text" class="skill-input" name="skill_4" id="skill_4" placeholder="Skill 4">
+        <input type="text" class="skill-input" name="skill_5" id="skill_5" placeholder="Skill 5">
+        <input type="text" class="skill-input" name="skill_6" id="skill_6" placeholder="Skill 6">
+        <input type="text" class="skill-input" name="skill_7" id="skill_7" placeholder="Skill 7">
+        <input type="text" class="skill-input" name="skill_8" id="skill_8" placeholder="Skill 8">
       </div>
+    </div>
+    <div class="form-group">
+      <label for="contact">Panel Contact Number *</label>
+      <input type="tel" id="contact" name="contact" placeholder="Enter Contact Number" required>
+    </div>
+    <div class="form-group">
+      <label for="tsr">TSR Code / Name *</label>
+      <select id="tsr" name="tsr" required>
+        <option value="">Select TSR</option>
+        <option value="SDAUTO">SDAUTO</option>
+        <option value="OTHER_TSR">Other TSR</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="account">Panel Account Name *</label>
+      <input type="text" id="account" name="account" placeholder="Enter Account Name" required>
+    </div>
+    <div class="form-group">
+      <label for="competency">Competency Code *</label>
+      <input type="text" id="competency" name="competency" placeholder="Enter Competency Code" required>
+    </div>
+    <div class="form-group">
+      <label for="geo">Panel Work Geo *</label>
+      <select id="geo" name="geo" required>
+        <option value="">Select Geo</option>
+        <option value="India">India</option>
+        <option value="APAC">APAC</option>
+        <option value="Europe">Europe</option>
+        <option value="NA">NA</option>
+      </select>
+    </div>
+    <button type="submit" class="submit-btn">Save Changes</button>
+    <button type="button" class="cancel-btn" onclick="window.location.href='main.html'">Cancel</button>
+  </form>
+</div>
 
-      <div class="form-group">
-        <label for="grade">Panel Grade *</label>
-        <input type="text" id="grade" name="grade" placeholder="Enter Panel Grade" required>
-      </div>
+<!-- Footer -->
+<div class="footer">
+  &copy; 2025 Online Interview Management System | All rights reserved
+</div>
 
-      <div class="form-group">
-        <label for="evaluation-round">Panel Evaluation Round (L1 / L2 / L3) *</label>
-        <input type="text" id="evaluation-round" name="evaluation_round" placeholder="Enter Evaluation Round" required>
-      </div>
+<!-- Script to Auto-Fill Form -->
+<script>
+  function loadProfile() {
+    const emailInput = document.getElementById("email");
+    const email = emailInput.value.trim();
+    if (!email) {
+      alert("Please enter an email address.");
+      return;
+    }
 
-      <div class="form-group">
-        <label for="name">Panel Name *</label>
-        <input type="text" id="name" name="name" placeholder="Enter Panel Name" required>
-      </div>
+    fetch(`/get_profile?email=${encodeURIComponent(email)}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
 
-      <div class="form-group">
-        <label>Panel Core Skill (Max 8 skills allowed)</label>
-        <div class="skills-container">
-          <input type="text" class="skill-input" name="skill_1" placeholder="Skill 1">
-          <input type="text" class="skill-input" name="skill_2" placeholder="Skill 2">
-          <input type="text" class="skill-input" name="skill_3" placeholder="Skill 3">
-          <input type="text" class="skill-input" name="skill_4" placeholder="Skill 4">
-          <input type="text" class="skill-input" name="skill_5" placeholder="Skill 5">
-          <input type="text" class="skill-input" name="skill_6" placeholder="Skill 6">
-          <input type="text" class="skill-input" name="skill_7" placeholder="Skill 7">
-          <input type="text" class="skill-input" name="skill_8" placeholder="Skill 8">
-        </div>
-      </div>
+        // Fill form fields
+        document.getElementById("grade").value = data.grade || "";
+        document.getElementById("evaluation-round").value = data.evaluation_round || "";
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("contact").value = data.contact || "";
+        document.getElementById("tsr").value = data.tsr || "";
+        document.getElementById("account").value = data.account || "";
+        document.getElementById("competency").value = data.competency || "";
+        document.getElementById("geo").value = data.geo || "";
 
-      <div class="form-group">
-        <label for="contact">Panel Contact Number *</label>
-        <input type="tel" id="contact" name="contact" placeholder="Enter Contact Number" required>
-      </div>
-
-      <div class="form-group">
-        <label for="tsr">TSR Code / Name *</label>
-        <select id="tsr" name="tsr" required>
-          <option value="">Select TSR</option>
-          <option value="SDAUTO">SDAUTO</option>
-          <option value="OTHER_TSR">Other TSR</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="account">Panel Account Name *</label>
-        <input type="text" id="account" name="account" placeholder="Enter Account Name" required>
-      </div>
-
-      <div class="form-group">
-        <label for="competency">Competency Code *</label>
-        <input type="text" id="competency" name="competency" placeholder="Enter Competency Code" required>
-      </div>
-
-      <div class="form-group">
-        <label for="geo">Panel Work Geo *</label>
-        <select id="geo" name="geo" required>
-          <option value="">Select Geo</option>
-          <option value="India">India</option>
-          <option value="APAC">APAC</option>
-          <option value="Europe">Europe</option>
-          <option value="NA">NA</option>
-        </select>
-      </div>
-
-      <button type="submit" class="submit-btn">Save</button>
-      <button type="button" class="cancel-btn" onclick="window.location.href='main.html'">Cancel</button>
-
-    </form>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    &copy; 2025 Online Interview Management System | All rights reserved
-  </div>
-
-  <!-- Internal JavaScript -->
-  <script>
-    document.getElementById('panel-profile-form').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent default form submission
-
-      email = document.getElementById('email').value.trim();
-      grade = document.getElementById('grade').value.trim();
-      evaluationRound = document.getElementById('evaluation-round').value.trim();
-      name = document.getElementById('name').value.trim();
-      contact = document.getElementById('contact').value.trim();
-      tsr = document.getElementById('tsr').value.trim();
-      account = document.getElementById('account').value.trim();
-      competency = document.getElementById('competency').value.trim();
-      geo = document.getElementById('geo').value.trim();
-
-      if (!email || !grade || !evaluationRound || !name || !contact || !tsr || !account || !competency || !geo) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-      }
-
-      if (!/^\d+$/.test(contact) || contact.length < 10) {
-        alert("Please enter a valid 10-digit phone number.");
-        return;
-      }
-
-      alert("Form is modify successfully!");
-      this.submit(); // Uncomment and change action attribute if you want actual submission
-    });
-  </script>
+        // Fill skills
+        data.skills.forEach((skill, index) => {
+          const input = document.querySelector(`input[name='skill_${index + 1}']`);
+          if (input) input.value = skill;
+        });
+      })
+      .catch(err => {
+        console.error("Fetch error:", err);
+        alert("Failed to load profile. Check console for details.");
+      });
+  }
+</script>
 
 </body>
 </html>
