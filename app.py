@@ -1,11 +1,66 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, redirect, url_for, session
 import pandas as pd
 import os
 import traceback
 
+# Ensure the necessary directories exist
 app = Flask(__name__)
 EXCEL_FILE = "data/Panel.xlsx"
 EXCEL_SLOT_FILE = "data/Panel_slot.xlsx"
+LOGIN_FILE = "data/login.xlsx"
+
+
+app.secret_key = 'your_secret_key'  # Replace with a secure key
+
+
+# Load login credentials from Excel
+def load_login_credentials():
+    if not os.path.exists(LOGIN_FILE):
+        return {}
+    df = pd.read_excel(LOGIN_FILE)
+    credentials = df.set_index('Email').to_dict(orient='index')
+    return {email: {'password': creds['Password'], 'role': creds['Role']} for email, creds in credentials.items()}
+
+@app.route('/')
+def index():
+    if 'user_email' in session:
+        return redirect(url_for('dashboard'))
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        credentials = load_login_credentials()
+        if email in credentials and credentials[email]['password'] == password:
+            session['user_email'] = email
+            session['user_role'] = credentials[email]['role']
+            return redirect(url_for('dashboard'))
+        else:
+            return "Invalid credentials", 401
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_email', None)
+    session.pop('user_role', None)
+    return redirect(url_for('login'))
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_email' not in session:
+        return redirect(url_for('login'))
+
+    user_role = session.get('user_role')
+    if user_role == 'Admin':
+        return render_template('main_admin.html')
+    elif user_role == 'Employee':
+        return render_template('main_employee.html')
+    else:
+        return "Unknown role", 403
 
 
 # Create Excel if not exists
@@ -27,10 +82,6 @@ if not os.path.exists(EXCEL_SLOT_FILE):
     df.to_excel(EXCEL_SLOT_FILE, index=False)
 
 
-
-@app.route('/')
-def index():
-    return render_template('main.html')
 
 @app.route('/get_profile', methods=['GET'])
 def get_profile():
@@ -62,8 +113,32 @@ def get_profile():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/save', methods=['POST'])
+@app.route('/create_profile')
+def create_profile():
+    return render_template('create_profile.html')
+
+@app.route('/modify_profile')
+def modify_profile():
+    return render_template('modify_profile.html')
+
+@app.route('/create_slot')
+def create_slot():
+    return render_template('create_slot.html')
+
+@app.route('/modify_slot')
+def modify_slot():
+    return render_template('modify_slot.html')
+@app.route('/manage_profile_admin')
+def manage_profile_admin():
+    return render_template('manage_profile_admin.html')
+
+@app.route('/manage_slot_admin')
+def manage_slot_admin():
+    return render_template('manage_slot_admin.html')
+
+@app.route('/save_data', methods=['POST'])
 def save_data():
+    print("Received form:", request.form)  # <-- DEBUG
     try:
         email = request.form.get('email')
         grade = request.form.get('grade')
@@ -107,10 +182,6 @@ def save_data():
         return f"Error saving data: {str(e)}", 500
 
 
-# 🟡 NEW ROUTE - Show Modify Form
-@app.route('/modify_profile')
-def modify_profile():
-    return render_template('modify_profile.html')  # Make sure this matches the filename exactly
 
 @app.route('/list_users')
 def list_users():
@@ -211,7 +282,6 @@ def update_profile():
 
     return message
 
-import traceback
 
 @app.route('/save_slot', methods=['POST'])
 def save_slot():
@@ -335,4 +405,5 @@ def update_slot():
     
 
 if __name__ == '__main__':
+    print(app.url_map)  # <-- Add this line for debugging
     app.run(debug=True)

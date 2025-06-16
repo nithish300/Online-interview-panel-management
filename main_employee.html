@@ -1,0 +1,20 @@
+<!-- templates/main_employee.html -->
+{% extends "main.html" %}
+{% block content %}
+<div class="dashboard">
+  <div class="card" id="profile">
+    <h2>Panel Profile</h2>
+    <ul>
+      <li><a href="{{ url_for('create_profile') }}">Create Profile</a></li>
+      <li><a href="{{ url_for('modify_profile') }}">Modify Profile</a></li>
+    </ul>
+  </div>
+  <div class="card" id="slots">
+    <h2>Panel Slots</h2>
+    <ul>
+        <li><a href="{{ url_for('create_slot') }}">Create Slot</a></li>
+        <li><a href="{{ url_for('modify_slot') }}">Modify Slot</a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
