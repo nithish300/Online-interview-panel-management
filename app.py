@@ -342,30 +342,36 @@ def update_slot():
         slot_time = request.form.get('slot_time')
         num_slots = request.form.get('num_slots')
 
-        if not all([emp_id, name, competency, geo, slot_start_date, slot_end_date, slot_time, num_slots]):
-            return "All fields are required.", 400
+        if not all([slot_start_date, slot_end_date, slot_time, num_slots]):
+            return "All fields are required!!", 400
 
         if not num_slots.isdigit() or int(num_slots) <= 0:
             return "Number of slots must be a positive integer.", 400
 
         num_slots = int(num_slots)
-        df = pd.read_excel(EXCEL_FILE)
 
-        if emp_id not in df['Emp ID'].values:
+        df = pd.read_excel(EXCEL_FILE)
+        df = ensure_columns(df)  # Make sure all expected columns exist
+
+        # Use string-based matching for Emp ID
+        if str(emp_id) not in df['Emp ID'].astype(str).values:
             return f"Emp ID '{emp_id}' not found!", 404
 
-        # Ensure all required columns exist
-        df = ensure_columns(df)
-        df.loc[df['Emp ID'] == emp_id, 'Slot Start Date'] = slot_start_date
-        df.loc[df['Emp ID'] == emp_id, 'Slot End Date'] = slot_end_date
-        df.loc[df['Emp ID'] == emp_id, 'Slot Start Time'] = slot_time
-        df.loc[df['Emp ID'] == emp_id, 'Number of Slots'] = num_slots
+        # Update DataFrame using string-safe comparison
+        df.loc[df['Emp ID'].astype(str) == str(emp_id), 'Slot Start Date'] = slot_start_date
+        df.loc[df['Emp ID'].astype(str) == str(emp_id), 'Slot End Date'] = slot_end_date
+        df.loc[df['Emp ID'].astype(str) == str(emp_id), 'Slot Start Time'] = slot_time
+        df.loc[df['Emp ID'].astype(str) == str(emp_id), 'Number of Slots'] = num_slots
 
+        # Save changes back to Excel
         df.to_excel(EXCEL_FILE, index=False)
+
         return f"Slot for {emp_id} updated successfully!"
+
     except Exception as e:
         print("Error updating slot:", str(e))
         return f"Error updating slot: {str(e)}", 500
+    
 
 @app.route("/save_bulk", methods=['POST'])
 def save_bulk():
