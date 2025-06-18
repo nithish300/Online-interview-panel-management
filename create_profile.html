@@ -113,7 +113,7 @@
 </head>
 <body>
     <header class="header">
-    <a href="http://127.0.0.1:5000/dashboard"  target="_blank" rel="noopener noreferrer">
+    <a onclick="window.location.href='/dashboard'"  target="_blank" rel="noopener noreferrer">
     
             <img src="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg"      
       
@@ -132,8 +132,8 @@
   <div class="form-container">
     <form id="panel-profile-form" action="{{ url_for('save_data') }}" method="POST">
       <div class="form-group">
-        <label for="email">Panel Email ID *</label>
-        <input type="email" id="email" name="email" placeholder="Enter Panel Email ID" required>
+        <label for="emp_id">Panel Emp ID *</label>
+        <input type="text" id="emp_id" name="emp_id" placeholder="Enter Panel Employee ID" required>
       </div>
 
       <div class="form-group">
@@ -214,7 +214,7 @@
     document.getElementById('panel-profile-form').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent default form submission
 
-      email = document.getElementById('email').value.trim();
+      emp_id = document.getElementById('emp_id').value.trim();
       grade = document.getElementById('grade').value.trim();
       evaluationRound = document.getElementById('evaluation-round').value.trim();
       name = document.getElementById('name').value.trim();
@@ -224,16 +224,12 @@
       competency = document.getElementById('competency').value.trim();
       geo = document.getElementById('geo').value.trim();
 
-      if (!email || !grade || !evaluationRound || !name || !contact || !tsr || !account || !competency || !geo) {
+      if (!emp_id || !grade || !evaluationRound || !name || !contact || !tsr || !account || !competency || !geo) {
         alert("Please fill in all required fields.");
         return;
       }
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-      }
+
 
       if (!/^\d+$/.test(contact) || contact.length < 10) {
         alert("Please enter a valid 10-digit phone number.");
@@ -242,6 +238,8 @@
 
       alert("Form submitted successfully!");
       this.submit(); // Uncomment and change action attribute if you want actual submission
+      this.reset();
+
     });
   </script>
 

@@ -1,8 +1,8 @@
-<!-- templates/main_admin.html -->
 {% extends "main.html" %}
 {% block content %}
+
 <div class="dashboard">
-  <div class="card" id="profile">
+<!--  <div class="card" id="profile">
     <h2>Manage Profile</h2>
     <ul>
       <li><a href="{{ url_for('manage_profile_admin') }}">Manage Profiles</a></li>
@@ -13,6 +13,17 @@
     <ul>
       <li><a href="{{ url_for('manage_slot_admin') }}">Manage Slots</a></li>
     </ul>
-  </div>
+  </div>-->
+  <div class="card" id="view-interviewers">
+  <h2>Interviewer Panel</h2>
+  <ul>
+    <li><a href="{{ url_for('view_interviewers') }}">View Available Interviewers</a></li>
+  </ul>
+  <ul>
+    <li><a href="{{ url_for('import_profiles') }}">Import Interviewers</a></li>
+  </ul>
+</div>
+
+
 </div>
 {% endblock %}

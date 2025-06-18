@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+{% block content %}
+<style>
+
+  h2 {
+    color: #333;
+  }
+  form {
+    margin-bottom: 20px;
+  }
+  input[type="file"] {
+    margin-bottom: 10px;
+  }
+  button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #218838;
+  }
+  </style>
+
+
+<body>
+  <h2>Import Bulk Interviewers</h2>
+
+  <form id="bulk-import-form" action="/save_bulk" method="post" enctype="multipart/form-data">
+    <label for="file">Upload Excel File (.xlsx):</label>
+    <input type="file" name="file" accept=".xlsx" required />
+    <br><br>
+    <button type="submit">Import Profiles</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    document.getElementById('bulk-import-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+
+      fetch('/save_bulk', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('response').innerText = data.message || data.error;
+      })
+      .catch(error => {
+        document.getElementById('response').innerText = "An error occurred.";
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+{% endblock %}

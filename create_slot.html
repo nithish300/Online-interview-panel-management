@@ -120,7 +120,7 @@
 
   <!-- Header -->
   <div class="header">
-        <a href="http://127.0.0.1:5000/dashboard" target="_blank" rel="noopener noreferrer">
+        <a onclick="window.location.href='/dashboard'" target="_blank" rel="noopener noreferrer">
     
             <img src="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg"      
       
@@ -133,11 +133,10 @@
   <!-- Form Container -->
   <div class="form-container">
     <form id="panel-slot-form" action="/save_slot" method="POST">
-<!-- Email -->
-<div class="form-group">
-  <label for="email">Panel Email ID *</label>
-  <input type="email" id="email" name="panel_email_id" placeholder="Enter Panel Email ID" required>
-</div>
+      <div class="form-group">
+        <label for="emp_id">Panel Emp ID *</label>
+        <input type="text" id="emp_id" name="emp_id" placeholder="Enter Panel Employee ID" required>
+      </div>
 
 <!-- Name -->
 <div class="form-group">
@@ -196,36 +195,35 @@
   </div>
 
   <!-- Internal JavaScript -->
-  <script>
+<script>
 document.getElementById('panel-slot-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default submission
 
-    const email = document.getElementById('email').value.trim();
-    const name = document.getElementById('name').value.trim();
-    const competency = document.getElementById('competency').value.trim();
-    const geo = document.getElementById('geo').value.trim();
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
-    const slotTime = document.getElementById('slot-time').value;
-    const numSlots = document.getElementById('num-slots').value;
+    const formData = new FormData(this);
+    const url = "{{ url_for('save_slot') }}";
 
-    if (!email || !name || !competency || !geo || !startDate || !endDate || !slotTime || !numSlots) {
-        alert("Please fill in all required fields.");
-        return;
-    }
-
-    if (new Date(startDate) > new Date(endDate)) {
-        alert("Start date must be before or equal to the end date.");
-        return;
-    }
-
-    if (isNaN(numSlots) || numSlots <= 0) {
-        alert("Number of slots must be a positive integer.");
-        return;
-    }
-
-    this.submit(); // Submit the form
+    fetch(url, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw response;
+        }
+        return response.text();
+    })
+    .then(text => {
+        alert(text); // Show success message
+        this.reset(); // Clear form
+    })
+    .catch(async err => {
+        const text = await err.text();
+        alert(text || "An unknown error occurred.");
+    });
+    this.reset(); // Clear form after submission
 });
-  </script>
+
+</script>
+
 </body>
 </html>

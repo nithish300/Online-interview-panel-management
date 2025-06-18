@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Modify Profile</title>
-  <link rel="icon" href="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg"  type="image/x-icon">
+  <title>Modify Panel Profile</title>
+
   <!-- Internal CSS -->
   <style>
     * {
@@ -12,24 +12,30 @@
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f8;
       color: #333;
       line-height: 1.6;
     }
+
     .header {
       padding: 20px;
       background-color: #2c3e50;
       color: white;
     }
-    h1{
-        text-align: center;
+
+    h1 {
+      text-align: center;
+      margin: 0;
     }
+
     .logo {
       height: 50px;
       margin-right: 15px;
     }
+
     .form-container {
       max-width: 700px;
       margin: 30px auto;
@@ -38,19 +44,23 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
+
     h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2c3e50;
     }
+
     .form-group {
       margin-bottom: 15px;
     }
+
     .form-group label {
       display: block;
       font-weight: bold;
       margin-bottom: 5px;
     }
+
     .form-group input,
     .form-group select {
       width: 100%;
@@ -60,16 +70,19 @@
       border-radius: 5px;
       transition: border-color 0.3s ease;
     }
+
     .form-group input:focus,
     .form-group select:focus {
       outline: none;
       border-color: #3498db;
     }
+
     .skills-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 10px;
     }
+
     .submit-btn {
       display: block;
       width: 100%;
@@ -83,9 +96,11 @@
       margin-top: 20px;
       transition: background-color 0.3s ease;
     }
+
     .submit-btn:hover {
       background-color: #2980b9;
     }
+
     .cancel-btn {
       display: block;
       width: 100%;
@@ -99,9 +114,28 @@
       margin-top: 10px;
       transition: background-color 0.3s ease;
     }
+
     .cancel-btn:hover {
       background-color: #c0392b;
     }
+    .load-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      color: white;
+      background-color: #3498db;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+    .load-btn:hover {
+      background-color: #2980b9;
+    }
+
+
     .footer {
       text-align: center;
       margin-top: 30px;
@@ -110,46 +144,55 @@
       color: white;
       font-size: 14px;
     }
+
+    .status-message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-    <header class="header">
-    <a href="http://127.0.0.1:5000/dashboard"  target="_blank" rel="noopener noreferrer">
-    
-            <img src="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg"      
-      
-                 alt="Hexaware Logo" class="logo" onerror="this.style.display='none'" />
-      
-          </a>
 
-  </header>
-<!-- Header -->
-<div class="header">
+<header class="header">
+      <a href="/" target="_blank" rel="noopener noreferrer">
+      <img src="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/digital-graphics/ds-logos/logo-hexaware.svg" 
+           alt="Hexaware Logo" class="logo" onerror="this.style.display='none'" />
+    </a>
   <h1>Modify The Panel Profile</h1>
-</div>
+</header>
 
 <!-- Form Container -->
 <div class="form-container">
-  <form id="panel-profile-form" action="/update_profile" method="POST">
+  <form id="panel-profile-form" method="POST" novalidate>
+    
+<div class="form-group">
+  <label for="emp_id">Employee ID *</label>
+  <input type="text" id="emp_id" name="emp_id" placeholder="Enter Employee ID" required>
+</div>
+
     <div class="form-group">
-      <label for="email">Panel Email ID *</label>
-      <input type="email" id="email" name="email" placeholder="Enter Panel Email ID" required>
+      <button type="button" class="load-btn" onclick="loadProfile()">Search Profile</button>
     </div>
+
     <div class="form-group">
       <label for="grade">Panel Grade *</label>
       <input type="text" id="grade" name="grade" placeholder="Enter Panel Grade" required>
     </div>
+
     <div class="form-group">
       <label for="evaluation-round">Panel Evaluation Round (L1 / L2 / L3) *</label>
       <input type="text" id="evaluation-round" name="evaluation_round" placeholder="Enter Evaluation Round" required>
     </div>
+
     <div class="form-group">
       <label for="name">Panel Name *</label>
       <input type="text" id="name" name="name" placeholder="Enter Panel Name" required>
     </div>
+
     <div class="form-group">
       <label>Panel Core Skill (Max 8 skills allowed)</label>
-      <div class="skills-container">
+      <div class="skills-container" id="skills-container">
         <input type="text" class="skill-input" name="skill_1" id="skill_1" placeholder="Skill 1">
         <input type="text" class="skill-input" name="skill_2" id="skill_2" placeholder="Skill 2">
         <input type="text" class="skill-input" name="skill_3" id="skill_3" placeholder="Skill 3">
@@ -160,10 +203,12 @@
         <input type="text" class="skill-input" name="skill_8" id="skill_8" placeholder="Skill 8">
       </div>
     </div>
+
     <div class="form-group">
       <label for="contact">Panel Contact Number *</label>
       <input type="tel" id="contact" name="contact" placeholder="Enter Contact Number" required>
     </div>
+
     <div class="form-group">
       <label for="tsr">TSR Code / Name *</label>
       <select id="tsr" name="tsr" required>
@@ -172,14 +217,17 @@
         <option value="OTHER_TSR">Other TSR</option>
       </select>
     </div>
+
     <div class="form-group">
       <label for="account">Panel Account Name *</label>
       <input type="text" id="account" name="account" placeholder="Enter Account Name" required>
     </div>
+
     <div class="form-group">
       <label for="competency">Competency Code *</label>
       <input type="text" id="competency" name="competency" placeholder="Enter Competency Code" required>
     </div>
+
     <div class="form-group">
       <label for="geo">Panel Work Geo *</label>
       <select id="geo" name="geo" required>
@@ -190,8 +238,13 @@
         <option value="NA">NA</option>
       </select>
     </div>
-    <button type="submit" class="submit-btn">Save Changes</button>
-    <button type="button" class="cancel-btn" onclick="window.location.href='main.html'">Cancel</button>
+
+    <div class="form-group">
+      <button type="submit" class="submit-btn">Save Changes</button>
+      <button type="button" class="cancel-btn" onclick="window.location.href='/dashboard'">Cancel</button>
+    </div>
+
+    <div class="status-message" id="statusMessage"></div>
   </form>
 </div>
 
@@ -200,50 +253,126 @@
   &copy; 2025 Online Interview Management System | All rights reserved
 </div>
 
-<!-- Script to Auto-Fill Form -->
 <script>
-  function loadProfile() {
-    const emailInput = document.getElementById("email");
-    const email = emailInput.value.trim();
-    if (!email) {
-      alert("Please enter an email address.");
+  async function loadProfile() {
+    const empIdInput = document.getElementById("emp_id");
+    const statusDiv = document.getElementById("statusMessage");
+
+    const emp_id = empIdInput.value.trim();
+    if (!emp_id) {
+      alert("Please enter an Employee ID.");
       return;
     }
 
-    fetch(`/get_profile?email=${encodeURIComponent(email)}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.error) {
-          alert(data.error);
-          return;
-        }
+    try {
+      const response = await fetch(`/search_employee?employee_id=${encodeURIComponent(emp_id)}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-        // Fill form fields
-        document.getElementById("grade").value = data.grade || "";
-        document.getElementById("evaluation-round").value = data.evaluation_round || "";
-        document.getElementById("name").value = data.name || "";
-        document.getElementById("contact").value = data.contact || "";
-        document.getElementById("tsr").value = data.tsr || "";
-        document.getElementById("account").value = data.account || "";
-        document.getElementById("competency").value = data.competency || "";
-        document.getElementById("geo").value = data.geo || "";
+      const data = await response.json();
 
-        // Fill skills
+      if (data.error) {
+        statusDiv.innerText = data.error;
+        statusDiv.style.color = "red";
+        return;
+      }
+
+      // Fill form fields
+      document.getElementById("grade").value = data.grade || "";
+      document.getElementById("evaluation-round").value = data.evaluation_round || "";
+      document.getElementById("name").value = data.name || "";
+      document.getElementById("contact").value = data.contact || "";
+      document.getElementById("tsr").value = data.tsr || "";
+      document.getElementById("account").value = data.account || "";
+      document.getElementById("competency").value = data.competency || "";
+      document.getElementById("geo").value = data.geo || "";
+
+      // Clear previous skills
+      for (let i = 1; i <= 8; i++) {
+        const input = document.querySelector(`input[name='skill_${i}']`);
+        if (input) input.value = "";
+      }
+
+      // Fill skills
+      if (Array.isArray(data.skills)) {
         data.skills.forEach((skill, index) => {
           const input = document.querySelector(`input[name='skill_${index + 1}']`);
           if (input) input.value = skill;
         });
-      })
-      .catch(err => {
-        console.error("Fetch error:", err);
-        alert("Failed to load profile. Check console for details.");
-      });
+      }
+
+      statusDiv.innerText = "Profile loaded successfully.";
+      statusDiv.style.color = "green";
+
+    } 
+    catch (err) {
+      console.error("Error loading profile:", err);
+      statusDiv.innerText = "Failed to load profile. Please check the Employee ID.";
+      statusDiv.style.color = "red";
+    }
   }
+
+  // Handle form submission
+  document.getElementById("panel-profile-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    try {
+      const response = await fetch("/update_profile", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.text(); // Flask returns plain text
+      const statusDiv = document.getElementById("statusMessage");
+
+      if (result.startsWith("Error")) {
+        statusDiv.innerText = result;
+        statusDiv.style.color = "red";
+      } else {
+        statusDiv.innerText = result;
+        statusDiv.style.color = "green";
+        resetForm(); // Reset form on success
+      }
+
+    } catch (error) {
+      console.error("Submission error:", error);
+      document.getElementById("statusMessage").innerText = "An error occurred while saving.";
+      document.getElementById("statusMessage").style.color = "red";
+    }
+  });
+
+  // Reset Form Fields
+  function resetForm() {
+    document.getElementById("emp_id").value = "";
+    document.getElementById("grade").value = "";
+    document.getElementById("evaluation-round").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("contact").value = "";
+    document.getElementById("tsr").value = "";
+    document.getElementById("account").value = "";
+    document.getElementById("competency").value = "";
+    document.getElementById("geo").value = "";
+    
+    for (let i = 1; i <= 8; i++) {
+      const input = document.querySelector(`input[name='skill_${i}']`);
+      if (input) input.value = "";
+    }
+
+    document.getElementById("statusMessage").innerText = "";
+  }
+
+  // Call resetForm when page loads
+  window.addEventListener("load", function () {
+    resetForm();
+  });
+
+  // Attach resetForm to Cancel button
+  document.querySelector(".cancel-btn")?.addEventListener("click", function () {
+    resetForm();
+  });
 </script>
 
 </body>
